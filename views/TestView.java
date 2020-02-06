@@ -27,8 +27,6 @@ public class TestView extends View {
 	
 	// Constructor
     public TestView() {
-    	getStylesheets().add(TestView.class.getResource("secondary.css").toExternalForm());
-    	
     	// List view
         ListView<String> listView = new ListView<String>();
         listView.setItems(FXCollections.observableArrayList(Application.TestProvider.asList()));

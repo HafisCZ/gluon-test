@@ -3,6 +3,12 @@ package com.hal0160.util;
 import java.util.Collections;
 import java.util.List;
 
+import com.hal0160.Application;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.text.Text;
+
 public class Utils {
 
 	public interface Func {
@@ -39,6 +45,18 @@ public class Utils {
 			return ((double) values.get(values.size() / 2 - 1) + (double) values.get(values.size() / 2)) / 2;
 		} else {
 			return (double) values.get(values.size() / 2);
+		}
+	}
+	
+	public static String format(String label, double value) {
+		return String.format("%s: %.3f", label, value);
+	}
+	
+	public static Node fromFXML(String resource) {
+		try {
+			return FXMLLoader.load(Application.class.getResource("examples/" + resource));
+		} catch (Exception e) {
+			return new Text("Resource failed to load!");
 		}
 	}
 	

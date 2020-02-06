@@ -1,5 +1,7 @@
 package com.hal0160.util;
 
+import javafx.scene.paint.Paint;
+
 public class Constants {
 
 	public static final String STR_HEADER = "Testing Application";
@@ -14,4 +16,5 @@ public class Constants {
 	public static final String SAMPLE_FILE = "t.txt";
 	public static final String SAMPLE_KEY = "t";
 	
+	public static final Paint FILL = Paint.valueOf("#2196F3");
 }

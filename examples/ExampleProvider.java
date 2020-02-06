@@ -44,5 +44,5 @@ public class ExampleProvider {
 	public Example getExample(String name) {
 		return this.examples.getOrDefault(name, null);
 	}
-	
+
 }

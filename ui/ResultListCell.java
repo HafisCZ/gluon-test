@@ -1,6 +1,7 @@
 package com.hal0160.ui;
 
 import com.hal0160.tests.Result;
+import com.hal0160.util.Utils;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -59,17 +60,13 @@ public class ResultListCell extends ListCell<Result> {
 		
 		this.name.setText(result.Test);
 		
-		this.timeMin.setText(format("Min", result.Min));
-		this.timeMax.setText(format("Max", result.Max));
+		this.timeMin.setText(Utils.format("Min", result.Min));
+		this.timeMax.setText(Utils.format("Max", result.Max));
 		
-		this.timeAverage.setText(format("Avg", result.Average));
-		this.timeMedian.setText(format("Med", result.Median));
+		this.timeAverage.setText(Utils.format("Avg", result.Average));
+		this.timeMedian.setText(Utils.format("Med", result.Median));
 		
 		this.setGraphic(this.grid);
-	}
-	
-	private static String format(String label, double value) {
-		return String.format("%s: %.3f", label, value);
 	}
 	
 }

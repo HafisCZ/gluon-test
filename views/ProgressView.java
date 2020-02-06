@@ -32,7 +32,7 @@ import javafx.scene.text.Text;
 
 public class ProgressView extends View {
 
-	private final ObservableList<Result> items = FXCollections.observableArrayList();
+	private final ObservableList<Result> items = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
 	
 	private final DoubleProperty progress = new SimpleDoubleProperty(0);
 	private final StringProperty name = new SimpleStringProperty("");
@@ -41,6 +41,7 @@ public class ProgressView extends View {
 	private final BooleanProperty shown = new SimpleBooleanProperty(true);
 	
 	private final VBox box = new VBox();
+	private boolean stop = false;
 	
     public ProgressView() {
     	// Completed tests
@@ -48,9 +49,12 @@ public class ProgressView extends View {
     	list.setCellFactory(c -> {
     		ListCell<Result> cell = new ResultListCell();
     		cell.setOnMouseClicked(event -> {
-    			if (!cell.isEmpty()) {
-    				ResultsView view = (ResultsView) getApplication().switchView(Application.VIEW_4).get();
+    			if (!cell.isEmpty() && !shown.get()) {
+    				ResultsView view = (ResultsView) getApplication().retrieveView(Application.VIEW_4).get();
     				view.showResult(cell.getItem());
+    			
+    				getApplication().switchView(Application.VIEW_4);
+    				
     				event.consume();
     			}
     		});
@@ -87,11 +91,16 @@ public class ProgressView extends View {
     	
     	this.box.getChildren().addAll(left, centered, progress);
     	
+    	this.setOnHiding(e -> {
+    		this.stop = true;
+    	});
+    	
     	setCenter(list);
     	setBottom(this.box);
     }
 
     public void runTests(List<String> tests) {
+    	this.stop = false;
     	Platform.runLater(() -> {
         	this.items.clear();
         	this.progress.set(0);
@@ -123,14 +132,22 @@ public class ProgressView extends View {
                 			time *= (double) (test.Count() - list.size());
                 			
                 			this.remaining.set("Around " + (int) time + " seconds remaining");
+                			
+                			if (this.stop) {
+                				test.stop();
+                			}
             			});
             		}, e -> {
             			e.printStackTrace();
             		});
             		
-            		Platform.runLater(() -> {
-                		this.items.add(result.withName(name));
-            		});
+            		if (result != null) {
+                		Platform.runLater(() -> {
+                    		this.items.add(result.withName(name));
+                		});
+            		} else {
+            			break;
+            		}
             	}
         		Platform.runLater(() -> {
             		setBottom(null);
@@ -142,12 +159,18 @@ public class ProgressView extends View {
     	}, "th0", 2 * 1024 * 1024).start();
     }
     
+    private void stop () {
+    	this.stop = true;
+    }
+    
     @Override
     protected void updateAppBar(AppBar bar) {
         bar.setTitleText(Constants.VIEWLABEL_3);
         
-        Button button = MaterialDesignIcon.ARROW_BACK.button(e -> getApplication().switchToPreviousView());
-        button.visibleProperty().bind(this.shown.not());
+        Button button = MaterialDesignIcon.ARROW_BACK.button(e -> {
+        	this.stop();
+        	this.getApplication().switchToPreviousView();
+        });
         bar.setNavIcon(button);
     }
 }

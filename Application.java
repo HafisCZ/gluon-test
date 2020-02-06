@@ -63,18 +63,20 @@ public class Application extends MobileApplication {
 		TestProvider.register("Write 1KB file", WriteFile.class, new Object[] { 100, Utils.TEXT_1KB, 1000 });
 		TestProvider.register("Read 16B file", ReadFile.class, new Object[] { 100, Utils.TEXT_16B, 1000 });
 		TestProvider.register("Read 1KB file", ReadFile.class, new Object[] { 100, Utils.TEXT_1KB, 1000 });
-		TestProvider.register("Write 16B setting", WritePrefs.class, new Object[] { 100, Utils.TEXT_16B, 1000 });
-		TestProvider.register("Write 1KB setting", WritePrefs.class, new Object[] { 100, Utils.TEXT_1KB, 1000 });
-		TestProvider.register("Read 16B setting", ReadPrefs.class, new Object[] { 100, Utils.TEXT_16B, 1000 });
-		TestProvider.register("Read 1KB setting", ReadPrefs.class, new Object[] { 100, Utils.TEXT_1KB, 1000 });
+		TestProvider.register("Write 16B setting", WritePrefs.class, new Object[] { 100, Utils.TEXT_16B, 100 });
+		TestProvider.register("Write 1KB setting", WritePrefs.class, new Object[] { 100, Utils.TEXT_1KB, 100 });
+		TestProvider.register("Read 16B setting", ReadPrefs.class, new Object[] { 100, Utils.TEXT_16B, 10000 });
+		TestProvider.register("Read 1KB setting", ReadPrefs.class, new Object[] { 100, Utils.TEXT_1KB, 10000 });
 		
 		// Register all examples
 		ExampleProvider.register("Hello world", "Show centered text", new Text("Hello world!"));
+		ExampleProvider.register("Example 1", "Simple login screen", Utils.fromFXML("example1.fxml"));
+		ExampleProvider.register("Example 2", "Message log", Utils.fromFXML("example2.fxml"));
+		ExampleProvider.register("Example 3", "", Utils.fromFXML("example3.fxml"));
     }
 
     @Override
     public void postInit(Scene scene) {
         Swatch.BLUE.assignTo(scene);
-        scene.getStylesheets().add(Application.class.getResource("style.css").toExternalForm());
     }
 }

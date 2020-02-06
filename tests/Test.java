@@ -10,7 +10,8 @@ public abstract class Test {
 
 	private final int iterations;
 	protected int divisions;
-
+	private boolean stop = false;
+	
 	protected Test (int iterations) {
 		this.iterations = iterations;
 		this.divisions = 1;
@@ -22,6 +23,10 @@ public abstract class Test {
 	
 	public int Parts() {
 		return this.divisions;
+	}
+	
+	public void stop() {
+		this.stop = true;
 	}
 	
 	public Result execute (Func1<List<Double>> callback, Func1<Exception> exceptionCallback) {
@@ -43,6 +48,10 @@ public abstract class Test {
 				// Progress callback
 				if (Objects.nonNull(callback)) {
 					callback.accept(measurements);
+				}
+
+				if (this.stop) {
+					return null;
 				}
 			}
 			
