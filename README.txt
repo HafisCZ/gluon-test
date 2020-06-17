@@ -1,0 +1,1 @@
+Složka other_test_implementations obsahuje jednotlivé implementace testů v jiných nástrojích
